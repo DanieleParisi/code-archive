@@ -5,13 +5,15 @@
 #include <algorithm>
 #include <fstream>
 
-long unsigned int merge_and_count(const std::vector<int> &v1,
-		    const std::vector<int> &v2,
-		    std::vector<int> &out) {
+long unsigned int merge_and_count(std::vector<int>::iterator beg1,
+				  std::vector<int>::iterator end1,
+				  std::vector<int>::iterator beg2,
+				  std::vector<int>::iterator end2, 
+				  const int SIZE) {
+	std::vector<int> out;
+	out.reserve(SIZE);
 	long unsigned int count = 0;
-
-	auto beg1 = v1.begin(), end1 = v1.end();
-	auto beg2 = v2.begin(), end2 = v2.end();
+	auto beg = beg1;
 	while (beg1 != end1 && beg2 != end2) {
 		if (*beg1 < *beg2) {
 			out.push_back(*beg1);
@@ -26,21 +28,21 @@ long unsigned int merge_and_count(const std::vector<int> &v1,
 		out.push_back(*beg1++);
 	while (beg2 != end2) 
 		out.push_back(*beg2++);
+	for(const auto &c : out)
+		*beg++ = c;
 	return count;
 }
 
-long unsigned int count_and_sort(std::vector<int> &vec) {
-	const auto SIZE = vec.size();
-	if (SIZE == 1 or vec.empty())
+long unsigned int count_and_sort(std::vector<int>::iterator beg, std::vector<int>::iterator end) {
+	const auto SIZE = end - beg;
+	if (SIZE < 2)
 		return 0;
 	long unsigned int count = 0;
-	auto beg = vec.begin(), end = vec.end();
-	std::vector<int> v1(beg, beg + (SIZE/2));
-	std::vector<int> v2(beg + (SIZE/2), end);
-	count += count_and_sort(v1);
-	count += count_and_sort(v2);
-	vec.clear();
-	count += merge_and_count(v1, v2, vec);
+	auto beg1 = beg, end1 = beg + (SIZE/2);
+	auto beg2 = beg + (SIZE/2), end2 = end;
+	count += count_and_sort(beg1, end1);
+	count += count_and_sort(beg2, end2);
+	count += merge_and_count(beg1, end1, beg2, end2, SIZE);
 	return count;
 }
 
@@ -51,6 +53,6 @@ main() {
 	int temp;
 	while (test >> temp)
 		vec.push_back(temp);
-	long unsigned count = count_and_sort(vec);
+	long unsigned count = count_and_sort(vec.begin(), vec.end());
 	std::cout << count << "\n";
 }
