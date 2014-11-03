@@ -12,17 +12,7 @@ long unsigned int merge_and_count(const std::vector<int> &v1,
 
 	auto beg1 = v1.begin(), end1 = v1.end();
 	auto beg2 = v2.begin(), end2 = v2.end();
-	while (true) {
-		if (beg1 == end1) {
-			auto ins = std::back_inserter(out);
-			std::copy(beg2, end2, ins);
-			break;
-		}
-		if (beg2 == end2) {
-			auto ins = std::back_inserter(out);
-			std::copy(beg1, end1, ins);
-			break;
-		}
+	while (beg1 != end1 && beg2 != end2) {
 		if (*beg1 < *beg2) {
 			out.push_back(*beg1);
 			++beg1;
@@ -32,6 +22,10 @@ long unsigned int merge_and_count(const std::vector<int> &v1,
 			count += end1 - beg1;
 		}
 	}
+	while (beg1 != end1)
+		out.push_back(*beg1++);
+	while (beg2 != end2) 
+		out.push_back(*beg2++);
 	return count;
 }
 
