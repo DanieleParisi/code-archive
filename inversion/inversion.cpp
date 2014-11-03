@@ -35,7 +35,7 @@ long unsigned int merge_and_count(const std::vector<int> &v1,
 	return count;
 }
 
-long int count_and_sort(std::vector<int> &vec) {
+long unsigned int count_and_sort(std::vector<int> &vec) {
 	const auto SIZE = vec.size();
 	if (SIZE == 1 or vec.empty())
 		return 0;
