@@ -3,12 +3,13 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
-int merge_and_count(const std::vector<int> &v1,
+long unsigned int merge_and_count(const std::vector<int> &v1,
 		    const std::vector<int> &v2,
 		    std::vector<int> &out) {
-	int count = 0;
-	out.reserve(v1.size() + v2.size());
+	long unsigned int count = 0;
+
 	auto beg1 = v1.begin(), end1 = v1.end();
 	auto beg2 = v2.begin(), end2 = v2.end();
 	while (true) {
@@ -34,12 +35,14 @@ int merge_and_count(const std::vector<int> &v1,
 	return count;
 }
 
-int count_and_sort(std::vector<int> &vec) {
-	if (vec.size() == 1)
+long int count_and_sort(std::vector<int> &vec) {
+	const auto SIZE = vec.size();
+	if (SIZE == 1 or vec.empty())
 		return 0;
-	int count = 0;
-	std::vector<int> v1(vec.begin(), vec.begin() + (vec.size()/2));
-	std::vector<int> v2(vec.begin() + (vec.size()/2), vec.end());
+	long unsigned int count = 0;
+	auto beg = vec.begin(), end = vec.end();
+	std::vector<int> v1(beg, beg + (SIZE/2));
+	std::vector<int> v2(beg + (SIZE/2), end);
 	count += count_and_sort(v1);
 	count += count_and_sort(v2);
 	vec.clear();
@@ -48,9 +51,12 @@ int count_and_sort(std::vector<int> &vec) {
 }
 
 main() {
-	std::vector<int> vec = {6,2,1,3,4,5};
-	int count = count_and_sort(vec);
+	std::vector<int> vec;
+	vec.reserve(100000);
+	std::ifstream test("test.txt");
+	int temp;
+	while (test >> temp)
+		vec.push_back(temp);
+	long unsigned count = count_and_sort(vec);
 	std::cout << count << "\n";
-	for (auto c : vec)
-		std::cout << c << " ";
 }
