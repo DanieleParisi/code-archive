@@ -1,5 +1,7 @@
 #include <iostream>
 #include <cmath>
+#include <string>
+#include <stdexcept>
 
 struct Vector{
 	Vector() : x(0), y(0) { };
@@ -28,11 +30,26 @@ bool operator==(const Vector& a, const Vector& b) {
 }
 
 std::istream& operator>>(std::istream& i, Vector& vec) {
-	i >> vec.x >> vec.y;
-	if (!i)
+	std::string temp;
+	i >> temp;
+	try {
+		auto comma = temp.find_first_of(',');
+		if (comma == temp.npos)
+			throw(std::invalid_argument(""));
+		int x = std::stoi(std::string(temp.begin(),temp.begin() + comma));
+		int y = std::stoi(std::string(temp.begin() + comma + 1,temp.end()));
+		vec.x = x;
+		vec.y = y;
+	} catch (std::invalid_argument &c) {
+		i.setstate(i.failbit);
+	}
+	if (!i) {
+		std::cerr << "Input error";
 		vec = Vector();
+	}
 	return i;
 }
+
 
 
 main() {
