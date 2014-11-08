@@ -29,6 +29,10 @@ bool operator==(const Vector& a, const Vector& b) {
 	return a.length() == b.length();
 }
 
+bool operator!=(const Vector& a, const Vector& b) {
+	return !(a.length() == b.length());
+}
+
 std::istream& operator>>(std::istream& i, Vector& vec) {
 	std::string temp;
 	i >> temp;
@@ -54,10 +58,8 @@ std::istream& operator>>(std::istream& i, Vector& vec) {
 
 main() {
 	Vector a(1,2);
-	Vector b(-1,2);
-	Vector c = (a + b);
-	std::cin >> b;
-	std::cout << b;
+	Vector b(31,2);
+	std::cout << (a != b);
 	
 }
 	
