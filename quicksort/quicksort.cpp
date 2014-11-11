@@ -2,6 +2,7 @@
 #include <vector>
 #include <algorithm>
 #include <fstream>
+#include <string>
 
 using ItVint = std::vector<int>::iterator;
 
@@ -30,9 +31,18 @@ void quick_sort(ItVint beg, ItVint end) {
 }
 
 main() {
-	std::vector<int> vec {5,1,3,7,2,8,9,11,4,6,10,22,13};
+	std::ifstream file("test.txt");
+	std::vector<int> vec;
+	vec.reserve(100000);
+	std::string temp;
+	while (file >> temp)
+		vec.push_back(std::stoi(temp));
+	file.close();
 	auto beg = vec.begin(), end = vec.end();
 	quick_sort(beg,end);
-	for (auto &c : vec)
-		std::cout << c << " ";
+
+	// std::ofstream out("out.txt");
+	// for (auto &c : vec)
+	// 	out << c << "\n";
+	// out.close();
 }
